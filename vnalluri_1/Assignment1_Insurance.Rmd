@@ -1,0 +1,51 @@
+---
+title: "Assignment 1 --- Insurance"
+output: html_document
+DataSet Source: Kaggle
+---
+
+
+```{r}
+
+(.packages())
+# Import the dataset , previewview the dataset (First 6 observations only) and structure
+insurance <- read.csv(file = 'insurance.csv')
+head(insurance)
+str(insurance)
+
+# **Displaying Descriptive Statistics for a few Quantitative Variables**
+# Displaying Maximum and Minimum of charges 
+
+min(insurance$charges)
+max(insurance$charges)
+
+# Displaying mean of bmi
+mean(insurance$bmi)
+
+
+# Displaying the Descriptive Statistics for all quantitative variables at once
+summary(insurance)
+
+# **Displaying Descriptive Statistics for a few Categorical Variables**
+# Displaying Total Number of Female and Male Customers
+
+library('plyr')
+library('gmodels')
+
+
+# Displaying Total Number of Female and Male 
+count(insurance,'sex')
+
+# Displaying Gender, smoker and region
+ftable(insurance$sex,insurance$smoker)
+
+
+#Plotting Histogram on Charges
+hist(insurance$charges)
+
+#ScatterPlot for age vs Charges
+
+plot(insurance$age, insurance$charges, main="Age and Insurance Charges",
+   xlab="Age ", ylab="Charges ")
+
+```
