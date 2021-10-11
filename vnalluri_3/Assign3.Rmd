@@ -1,0 +1,95 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+## Load the Primal data 
+```{r}
+#install.packages("lpSolveAPI")
+library(lpSolveAPI)
+lprec <- read.lp("Primal.lp")
+
+```
+
+## Solve the Primal
+```{r}
+solve(lprec)
+get.objective(lprec)
+get.variables(lprec)
+get.constraints(lprec)
+```
+***
+Shadow prices are the maximum price we can pay for an additional unit of a constraint or resource and it will be calculated by adding 1 to each constraint or variables and calculating the new objective function. Shadow price for a constraint= New objective function - old objective function
+Out put for the given below code will show Duals which will give the shadow prices for Constarints and variables (in the order)
+
+***
+```{r}
+get.sensitivity.rhs(lprec)
+```
+***
+
+Shadow Prices: 0.00    0.00    0.00   12.00   20.00   60.00    0.00    0.00    0.00   -0.08    0.56 
+Dual: 12.00   20.00   60.00
+Reduced Costa: 0.00    0.00  -24.00 -40.00    0.00    0.00 -360.00 -120.00    0.00
+
+***
+
+***
+
+Reduced cost is the coefficient of a variable that would need to increase or decrease to make an impact on the optimal solution for maximization or minimization
+
+Given below code gives the Reduced costs and the Range with in which the optimal solution will remain same
+
+***
+
+
+```{r}
+cbind(get.sensitivity.rhs(lprec)) $duals[12:20]
+get.sensitivity.rhs(lprec) $duals [12:20]
+```
+
+```{r}
+get.sensitivity.obj(lprec)
+```
+
+
+## Load the library and the Dual data 
+```{r}
+lprec2 <- read.lp("Dual.lp")
+set.bounds(lprec2,lower = c(-Inf, -Inf),columns= 10:11)
+
+```
+
+## Solve the Dual
+```{r}
+solve(lprec2)
+
+
+
+get.objective(lprec2)
+get.variables(lprec2)
+get.constraints(lprec2)
+```
+***
+Objective function value is 696000 for the Dual and for the Primal it is 696000
+
+Hence there is strong duality and Primal & Dual agree with each other
+
+***
+
+```{r}
+get.sensitivity.rhs(lprec2)
+
+```
+```{r}
+get.dual.solution(lprec2) [2:12]
+get.dual.solution(lprec2) [13:21]
+
+```
+
+***
+
+Hence , based on Objective values , shadow prices and solution for Dual , we can say that Primal and Dual agree with each other.
+
+***
+
